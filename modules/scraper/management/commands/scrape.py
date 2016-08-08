@@ -10,8 +10,6 @@ class Command(BaseCommand):
         parser.add_argument("--dry-run", action="store_true")
 
     def handle(self, *args, **options):
-        print(args)
-        print(options)
         scraper_module = import_module("scraper.{}".format(options["name"]))
         notes = scraper_module.Scrapper().initial()
 

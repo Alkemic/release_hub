@@ -40,10 +40,10 @@ def extract_version(text):
     if not isinstance(text, str):
         raise ValueError("Parameter must be `str` type")
 
-    matches = re.search("(\d+\.\d+(\.\d+)?([a-zA-Z0-9 ]*)?)", text)
+    matches = re.search("(\d+(\.\d+)?(\.\d+)?([a-zA-Z0-9 ]*)?)", text)
 
     if matches and matches.groups():
-        return matches.groups()[0]
+        return matches.groups()[0].strip()
 
     return None
 
