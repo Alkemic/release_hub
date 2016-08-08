@@ -3,6 +3,7 @@ import re
 import scrapper
 import requests
 
+from modules.utils.classes import BaseScrapper
 from modules.utils.functions import extract_version, extract_date
 
 
@@ -58,7 +59,7 @@ class ReleaseSectionCollection(scrapper.CrawlerMultiItem):
     content_selector = ".body > .section > .section"
 
 
-class Scrapper():
+class Scrapper(BaseScrapper):
     downloads_url = "https://www.python.org/downloads/"
 
     HG_RELEASE_HEADER = "(What's New in Python .*\n=*\n\n.*Release date.*\n\n)"

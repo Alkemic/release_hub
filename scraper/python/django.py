@@ -3,6 +3,7 @@ import re
 import requests
 import scrapper
 
+from modules.utils.classes import BaseScrapper
 from modules.utils.functions import extract_version, extract_date
 
 
@@ -40,7 +41,7 @@ class DjangoReleaseNoteSet(scrapper.CrawlerItemSet):
     links_selector = release_notes_links,
 
 
-class Scrapper():
+class Scrapper(BaseScrapper):
     def initial(self):
         for note in DjangoReleaseNoteSet():
             yield note.as_dict()

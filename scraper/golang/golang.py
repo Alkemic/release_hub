@@ -1,5 +1,6 @@
 import scrapper
 
+from modules.utils.classes import BaseScrapper
 from modules.utils.functions import extract_version, extract_date
 
 
@@ -18,7 +19,6 @@ class ReleaseEntryCollection(scrapper.CrawlerMultiItem):
 
 
 def allowed_tags(tag):
-    print(tag.attrs.get("id"))
     return not (
         str(tag.name) in ("h1", "style") or
         tag.attrs.get("id") == "footer"
@@ -42,7 +42,7 @@ class ReleaseNote(scrapper.CrawlerItem):
     notes = scrapper.CrawlerField("#page .container", filter_notes, True)
 
 
-class Scrapper():
+class Scrapper(BaseScrapper):
     DOCS_URL = "https://golang.org/doc/go{}"
     RELEASE_NOTES_URL = "https://golang.org/doc/devel/release.html"
 
