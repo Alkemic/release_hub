@@ -14,10 +14,10 @@ class Project(CRUDDateTimeModel):
 class Note(CRUDDateTimeModel):
     project = models.ForeignKey(Project)
     release_version = models.CharField(max_length=127)
-    release_date = models.DateField()
-    release_link = models.URLField()
-    download_link = models.URLField()
-    notes = models.TextField()
+    release_date = models.DateField(blank=True, null=True)
+    release_link = models.URLField(blank=True, null=True)
+    download_link = models.URLField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
 
     class Meta:
         ordering = ["-project", "release_version"]
