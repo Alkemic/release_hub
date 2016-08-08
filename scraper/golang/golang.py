@@ -43,6 +43,8 @@ class ReleaseNote(scrapper.CrawlerItem):
 
 
 class Scrapper(BaseScrapper):
+    project_name = "GOLang"
+
     DOCS_URL = "https://golang.org/doc/go{}"
     RELEASE_NOTES_URL = "https://golang.org/doc/devel/release.html"
 

@@ -1,4 +1,8 @@
 class BaseScrapper:
+    @property
+    def project_name(self):
+        raise NotImplementedError
+
     def register(self):
         raise NotImplementedError
 

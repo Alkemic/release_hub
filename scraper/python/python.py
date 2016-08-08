@@ -60,6 +60,8 @@ class ReleaseSectionCollection(scrapper.CrawlerMultiItem):
 
 
 class Scrapper(BaseScrapper):
+    project_name = "Python"
+
     downloads_url = "https://www.python.org/downloads/"
 
     HG_RELEASE_HEADER = "(What's New in Python .*\n=*\n\n.*Release date.*\n\n)"

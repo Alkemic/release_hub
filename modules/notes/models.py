@@ -10,6 +10,9 @@ class Project(CRUDDateTimeModel):
     class Meta:
         ordering = ["-name"]
 
+    def __str__(self):
+        return self.name
+
 
 class Note(CRUDDateTimeModel):
     project = models.ForeignKey(Project)
@@ -20,4 +23,7 @@ class Note(CRUDDateTimeModel):
     notes = models.TextField(blank=True, null=True)
 
     class Meta:
-        ordering = ["-project", "release_version"]
+        ordering = ["project__name", "-release_version"]
+
+    def __str__(self):
+        return "Notes for {} v. {}".format(self.project, self.release_version)

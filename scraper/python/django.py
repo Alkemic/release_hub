@@ -42,6 +42,8 @@ class DjangoReleaseNoteSet(scrapper.CrawlerItemSet):
 
 
 class Scrapper(BaseScrapper):
+    project_name = "Django"
+
     def initial(self):
         for note in DjangoReleaseNoteSet():
             yield note.as_dict()
