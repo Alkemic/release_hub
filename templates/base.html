@@ -1,0 +1,89 @@
+{% load i18n staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% trans 'Index' %}{% endblock %} - Release HUB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//netdna.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css" rel="stylesheet" />
+    {% block extra_style %}{% endblock %}
+
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
+    <![endif]-->
+
+    <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/latest/js/bootstrap.min.js"></script>
+    {% block extra_script %}{% endblock %}
+
+    {% if google_site_verification %}<meta name="google-site-verification" content="{{ google_site_verification }}" />{% endif %}
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div id="wrap">
+        <header class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">{% trans 'Toggle navigation' %}</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Release HUB</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+{#                        {% url 'blog:index' as blogUrl %}#}
+{#                        <li{% if request.path|match_url:blogUrl %} class="active"{% endif %}><a href="{{ blogUrl }}">{% trans 'Blog' %}</a></li>#}
+{#                        {% url 'portfolio:index' as portfolioUrl %}#}
+{#                        <li{% if request.path|match_url:portfolioUrl %} class="active"{% endif %}><a href="{{ portfolioUrl }}">{% trans 'Portfolio' %}</a></li>#}
+{#                        {% url 'static_page:entry' slug='resume' as resumeUrl %}#}
+{#                        <li{% if request.path|match_url:resumeUrl %} class="active"{% endif %}><a href="{{ resumeUrl }}">{% trans 'Résumé' %}</a></li>#}
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+{#                        <li>#}
+{#                            <form class="navbar-form navbar-left search" role="search">#}
+{#                                <div class="form-group"><input name="phrase" type="text" class="form-control" placeholder="{% trans 'Search' %}" /></div>#}
+{#                            </form>#}
+{#                        </li>#}
+{#                        {% url 'about:index' as aboutUrl %}#}
+{#                        <li{% if request.path|match_url:aboutUrl %} class="active"{% endif %}><a href="{{ aboutUrl }}">{% trans 'About/contact' %}</a></li>#}
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+{#        <div style="background: url(http://lorempixel.com/1920/500/); width: 100%; margin: 0px 0 0 0 !important; height: 500px;"></div>#}
+
+        <div class="container" id="content">
+
+{#            {% bootstrap_messages %}#}
+
+            <ol class="breadcrumb">
+                {% block breadcrumbs %}
+                    <li><a href="/"><i class="glyphicon glyphicon-home"></i></a></li>
+                    {% if request.breadcrumbs %}
+                        {% for name, url in request.breadcrumbs %}
+                            <li{% if forloop.last %} class="active"{% endif %}><a href="{{ url }}">{{ name }}</a></li>
+                        {% endfor %}
+                    {% endif %}
+                {% endblock %}
+            </ol>
+
+            {% block content %}{% endblock %}
+
+        </div><!-- /.container -->
+    </div><!-- /#wrap -->
+
+    <footer id="footer">
+        <div class="container">
+            <p class="text-muted">&copy; {% now 'Y' %} Daniel Czuba</p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,6 +1,8 @@
+from datetime import datetime
+from importlib import import_module
+
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
-from importlib import import_module
 
 from modules.notes.models import Project, Note
 from modules.utils.classes import BaseScrapper
@@ -30,7 +32,8 @@ class Command(BaseCommand):
             created_by=self._user,
         )
 
-
+        note_obj.activated_by = self._user
+        note_obj.activated_at = datetime.now()
         note_obj.release_date = note["date"]
         note_obj.release_link = note["url"]
         note_obj.download_link = note.get("download")

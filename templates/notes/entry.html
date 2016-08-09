@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n bootstrap3 utils %}
+
+{% block title %}{{ entry }} - {% trans 'Entry' %}{% endblock %}
+
+{% block content %}
+    <div class="blog">
+        <div class="page-header"><h2>
+            {{ entry }}
+            {% if entry.release_date %} <small>{{ entry.release_date }}</small>{% endif %}
+        </h2></div>
+
+        <div class="content">
+            {{ entry.notes|safe }}
+        </div>
+
+        <ul class="pager">
+            {% define entry.get_prev_in_project as prev_in_project %}
+            {% define entry.get_next_in_project as next_in_project %}
+            {% if prev_in_project %}<li class="previous"><a href="{{ prev_in_project.get_absolute_url }}">&larr; {{ prev_in_project }}</a></li>{% endif %}
+            {% if next_in_project %}<li class="next"><a href="{{ entrynext_in_project.get_absolute_url }}">{{ next_in_project }} &rarr;</a></li>{% endif %}
+        </ul>
+    </div>
+{% endblock %}

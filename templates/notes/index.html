@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n bootstrap3 %}
+
+{% block title %}{% trans 'Index' %}{% endblock %}
+
+{% block content %}
+
+<div class="content">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Project</th>
+            <th>Version</th>
+            <th>Daate</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in list %}
+        <tr>
+            <td>{{ item.project }}</td>
+            <td><a href="{% url "notes:entry" item.project.name item.release_version %}">{{ item.release_version }}</a></td>
+            <td>{{ item.release_date }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if is_paginated %}
+    <div class="text-center">
+        {% bootstrap_pagination page_obj %}
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
