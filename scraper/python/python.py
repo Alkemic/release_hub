@@ -2,6 +2,7 @@ import re
 
 import scrapper
 import requests
+from markdown import markdown
 
 from modules.utils.classes import BaseScrapper
 from modules.utils.functions import extract_version, extract_date
@@ -72,24 +73,40 @@ class Scrapper(BaseScrapper):
             if item.url.startswith("https://docs.python.org"):
                 yield from self._parse_pydocs(item)
 
-            if item.url.startswith("https://hg.python.org/"):
+            elif item.url.startswith("https://hg.python.org/") or \
+                    item.url.startswith("http://hg.python.org/"):
                 yield from self._parse_hg(item)
+
+    def _decode_cnt(self, text):
+        try:
+            return text.decode()
+        except UnicodeDecodeError:
+            # brute-force encoding...
+            for enc in ["latin2"]:
+                try:
+                    text = str(text, enc)
+                    return text
+                except UnicodeDecodeError:
+                    pass
+
+        raise ValueError
 
     def _parse_pydocs(self, item):
         notes_set = ReleaseSectionCollection(item.url)
 
-        for note in notes_set:
-            if item.version in note.version:
-                yield {
-                    "version": note.version,
-                    "notes": note.notes,
-                    "date": note.date,
-                    "url": item.url,
-                }
+        for note in filter(lambda el: item.version in el.version, notes_set):
+            yield {
+                "version": note.version,
+                "notes": note.notes,
+                "date": note.date,
+                "url": item.url,
+            }
 
     def _parse_hg(self, item):
-        rn = requests.get(item.url).content.decode("utf-8")
-        splitted = re.split(self.HG_RELEASE_HEADER, rn)
+        resp = requests.get(item.url)
+        cnt = self._decode_cnt(resp.content)
+
+        splitted = re.split(self.HG_RELEASE_HEADER, cnt)
 
         i = 1  # on index==0 there is "Python News" header
         while True:
@@ -98,11 +115,16 @@ class Scrapper(BaseScrapper):
             header = splitted[i].strip()
             cnt = splitted[i+1].strip()
 
-            if item.version in header:
+            version = item.version
+            if item.version == '3.1.0':
+                version = '3.1'
+
+            if version in header:
                 ver = extract_version(header)
                 yield {
                     "version": ver,
-                    "notes": "<pre>{}</pre>".format(cnt),
+                    # still better than docutils ReST parser
+                    "notes": markdown(cnt),
                     "date": extract_date(header),
                     "url": item.url,
                 }

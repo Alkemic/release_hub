@@ -28,8 +28,8 @@ MONTHS = {
 }
 
 DATE_MAP = {
-    "(\d{4})[-\/](\d{2})[-\/](\d{2})": lambda m: date(*map(int, m)),
-    "(\d{2})[-\/]([a-zA-Z]{3})[-\/](\d{4})":
+    "(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})": lambda m: date(*map(int, m)),
+    "(\d{2})[-\/]([a-zA-Z]{3,})[-\/](\d{4})":
         lambda m: date(int(m[2]), MONTHS[m[1].lower()], int(m[0])),
     "([a-zA-z]+) (\d{1,2}), (\d{4})":
         lambda m: date(int(m[2]), MONTHS[m[0].lower()], int(m[1])),

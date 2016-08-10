@@ -11,7 +11,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
-    list_display = "project", "release_version", "release_date"
+    list_display = "project", "release_version", "release_date", "is_activated"
     list_display_links = "project", "release_version"
     list_filter = "project",
 

@@ -34,6 +34,7 @@ class Command(BaseCommand):
 
         note_obj.activated_by = self._user
         note_obj.activated_at = datetime.now()
+
         note_obj.release_date = note["date"]
         note_obj.release_link = note["url"]
         note_obj.download_link = note.get("download")
