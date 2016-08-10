@@ -1,6 +1,9 @@
+import re
+
 from django.db import models
 from django.db.models import permalink
 
+from modules.utils.functions import generate_orderable_version_number
 from modules.utils.models import CRUDDateTimeModel
 
 
@@ -18,6 +21,7 @@ class Project(CRUDDateTimeModel):
 class Note(CRUDDateTimeModel):
     project = models.ForeignKey(Project)
     release_version = models.CharField(max_length=127)
+    release_version_order = models.CharField(max_length=255)
     release_date = models.DateField(blank=True, null=True)
     release_link = models.URLField(blank=True, null=True)
     download_link = models.URLField(blank=True, null=True)
@@ -36,8 +40,10 @@ class Note(CRUDDateTimeModel):
     def get_prev_in_project(self):
         try:
             self.__prev_in_project = Note.objects.active() \
-                .order_by("-release_version") \
-                .filter(release_version__lt=self.release_version).first()
+                .order_by("-release_version_order") \
+                .filter(project=self.project) \
+                .filter(release_version_order__lt=self.release_version_order) \
+                .first()
         except Note.DoesNotExist:
             self.__prev_in_project = None
 
@@ -46,10 +52,19 @@ class Note(CRUDDateTimeModel):
     def get_next_in_project(self):
         try:
             self.__next_in_project = Note.objects.active() \
-                .order_by("release_version") \
-                .filter(release_version__gt=self.release_version).first()
+                .order_by("release_version_order") \
+                .filter(project=self.project) \
+                .filter(release_version_order__gt=self.release_version_order) \
+                .first()
 
         except Note.DoesNotExist:
             self.__next_in_project = None
 
         return self.__next_in_project
+
+    def save(self, *args, **kwargs):
+        self.release_version_order = generate_orderable_version_number(
+            self.release_version,
+        )
+
+        super().save(*args, **kwargs)

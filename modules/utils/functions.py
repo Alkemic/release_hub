@@ -55,3 +55,15 @@ def extract_date(text):
             return callback(matches.groups())
 
     return None
+
+
+def generate_orderable_version_number(version):
+    ver = re.split(
+        "(\d+)(\.(\d+))?(\.(\d+))?(\.(\d+))?([a-zA-Z0-9 ]*)?",
+        version,
+    )
+
+    return "{:0>3}{:0>3}{:0>3}{:0>3}{}".format(
+        ver[1], ver[3] or "", ver[5] or "", ver[7] or "",
+        (ver[8] or "").lower().strip(),
+    )
