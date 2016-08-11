@@ -28,7 +28,7 @@ class Note(CRUDDateTimeModel):
     notes = models.TextField(blank=True, null=True)
 
     class Meta:
-        ordering = ["project__name", "-release_version"]
+        ordering = ["project__name", "-release_version_order"]
 
     def __str__(self):
         return "Notes for {} v. {}".format(self.project, self.release_version)
