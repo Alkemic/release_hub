@@ -21,9 +21,9 @@ class DjangoReleaseNote(scrapper.CrawlerItem):
     notes = scrapper.CrawlerField(
         "#docs-content > .section > *",
         lambda _, content, __: "\n".join([
-            str(sec)
-            for sec in content.select(".section")
-        ]),
+            str(el)
+            for el in content.select("#docs-content > .section > *")
+        ][3:]),
         True,
     )
     url = scrapper.CrawlerField("#asd", lambda _, __, response: response.url)
