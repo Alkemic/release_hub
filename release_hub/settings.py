@@ -2,7 +2,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'b+3p&tys^o$!oy#b8dmr14)_2zewi_)@$)oidhkf#01)=^@&lg'
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 DEBUG = True
 
@@ -58,9 +58,19 @@ WSGI_APPLICATION = 'release_hub.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, '../rh.db'),
-    }
+        'ENGINE': 'django.db.backends.{}'.format(os.environ.get(
+            'DATABASE_ENGINE',
+            'sqlite3',
+        )),
+        'NAME': os.environ.get(
+            'DATABASE_NAME',
+            os.path.join(BASE_DIR, '../rh.db'),
+        ),
+        'USER': os.environ.get('DATABASE_USER', ''),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
+        'HOST': os.environ.get('DATABASE_HOST', ''),
+        'PORT': os.environ.get('DATABASE_PORT', ''),
+    },
 }
 
 
